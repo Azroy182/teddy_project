@@ -10,18 +10,6 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "baseUrl": ".",
-    "paths": {
-      "@teddy/shared": ["packages/shared/src"],
-      "@teddy/shared/*": ["packages/shared/src/*"]
-    }
-  },
-  "references": [
-    {
-      "path": "./packages/shared"
-    },
-    {
-      "path": "./apps/bot"
-    }
-  ]
+    "resolveJsonModule": true
+  }
 }

@@ -18,13 +18,8 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "resolveJsonModule": true,
-    "composite": true,
-    "paths": {
-      "@teddy/shared": ["../../packages/shared/src"],
-      "@teddy/shared/*": ["../../packages/shared/src/*"]
-    }
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*", "../../prisma/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }
