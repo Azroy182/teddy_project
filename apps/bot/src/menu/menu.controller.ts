@@ -1,24 +1,19 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { MenuService } from './menu.service';
-import type { Language, ApiResponse } from '@teddy/shared';
+import type { Language } from '@teddy/shared';
+import { handleError, handleSuccess } from '../common/utils';
 
 @Controller('menu')
 export class MenuController {
   constructor(private menuService: MenuService) {}
 
   @Get()
-  async getMenu(@Query('lang') lang?: Language): Promise<ApiResponse> {
+  async getMenu(@Query('lang') lang?: Language) {
     try {
       const menu = await this.menuService.getMenu(lang || 'EN');
-      return {
-        success: true,
-        data: menu,
-      };
+      return handleSuccess(menu);
     } catch (error) {
-      return {
-        success: false,
-        error: error.message,
-      };
+      return handleError(error);
     }
   }
 }

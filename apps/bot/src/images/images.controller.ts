@@ -27,7 +27,7 @@ export class ImagesController {
       
       res.redirect(imageUrl);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error instanceof Error ? error.message : 'Unknown error' });
     }
   }
 
@@ -51,7 +51,7 @@ export class ImagesController {
       
       res.redirect(imageUrl);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error instanceof Error ? error.message : 'Unknown error' });
     }
   }
 }

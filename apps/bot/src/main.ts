@@ -11,17 +11,16 @@ async function bootstrap() {
     new FastifyAdapter({
       logger: {
         level: process.env.NODE_ENV === 'production' ? 'warn' : 'info',
-        prettyPrint: process.env.NODE_ENV !== 'production',
       },
     }),
   );
 
   const configService = app.get(ConfigService);
 
-  // Security
-  await app.register(helmet, {
-    contentSecurityPolicy: false,
-  });
+  // Security - commented out for now due to Fastify compatibility
+  // await app.register(helmet, {
+  //   contentSecurityPolicy: false,
+  // });
 
   // CORS
   app.enableCors({

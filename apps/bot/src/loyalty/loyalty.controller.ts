@@ -1,7 +1,8 @@
 import { Controller, Get, Param, Post, Body, UseGuards } from '@nestjs/common';
 import { LoyaltyService } from './loyalty.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { ConfirmVisitDto, ApiResponse } from '@teddy/shared';
+import { ConfirmVisitDtoType } from '@teddy/shared';
+import { handleError, handleSuccess } from '../common/utils';
 
 @Controller('loyalty')
 export class LoyaltyController {
@@ -9,39 +10,27 @@ export class LoyaltyController {
 
   @Get('progress/:familyId')
   @UseGuards(JwtAuthGuard)
-  async getLoyaltyProgress(@Param('familyId') familyId: string): Promise<ApiResponse> {
+  async getLoyaltyProgress(@Param('familyId') familyId: string) {
     try {
       const progress = await this.loyaltyService.getLoyaltyProgress(familyId);
-      return {
-        success: true,
-        data: progress,
-      };
+      return handleSuccess(progress);
     } catch (error) {
-      return {
-        success: false,
-        error: error.message,
-      };
+      return handleError(error);
     }
   }
 
   @Post('visit')
   @UseGuards(JwtAuthGuard)
-  async recordVisit(@Body() dto: ConfirmVisitDto): Promise<ApiResponse> {
+  async recordVisit(@Body() dto: ConfirmVisitDtoType) {
     try {
       // TODO: Implement visit code validation
       // For now, assume familyId is passed directly
       const familyId = dto.code; // Temporary hack
       
       const result = await this.loyaltyService.incrementVisit(familyId, dto.staffId);
-      return {
-        success: true,
-        data: result,
-      };
+      return handleSuccess(result);
     } catch (error) {
-      return {
-        success: false,
-        error: error.message,
-      };
+      return handleError(error);
     }
   }
 }

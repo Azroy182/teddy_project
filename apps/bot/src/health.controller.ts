@@ -23,7 +23,7 @@ export class HealthController {
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
         database: 'disconnected',
-        error: error.message,
+        error: error instanceof Error ? error.message : 'Unknown error',
       };
     }
   }
