@@ -1,0 +1,34 @@
+{
+  "greeting": "👋 Olá! Bem-vindos ao parque infantil Teddy & Friends!",
+  "menu": {
+    "loyalty": "🌟 Cartão de Fidelidade",
+    "cafe": "☕ Menu do Café",
+    "hours": "🕐 Horário de Funcionamento",
+    "events": "🎉 Eventos",
+    "rules": "📋 Regras",
+    "profile": "👤 O Meu Perfil",
+    "unsubscribe": "🔕 Cancelar Subscrição"
+  },
+  "onboarding": {
+    "choose_language": "Please choose your language / Por favor escolha o seu idioma",
+    "welcome": "Bem-vindos ao Teddy & Friends! 🐻\n\nEstamos muito felizes por vos ter aqui. Vamos configurar o vosso programa de fidelidade.",
+    "customer_number": "O vosso número de cliente é: **{{clientCode}}**\n\nMostrem isto aos nossos funcionários quando nos visitarem!",
+    "menu_hint": "Vejam o nosso delicioso menu e comecem a colecionar carimbos para a vossa hora grátis! 🌟"
+  },
+  "loyalty": {
+    "progress": "🌟 O vosso progresso: {{current}}/{{target}} visitas\n\nContinuem a visitar-nos para ganharem a vossa hora grátis!",
+    "completed": "🎉 Parabéns! Completaram o vosso cartão de fidelidade!",
+    "voucher_ready": "O vosso voucher GRÁTIS de 1 hora está pronto! Mostrem isto aos nossos funcionários."
+  },
+  "checkout": {
+    "message": "Obrigado por visitarem o Teddy & Friends! 🐻\n\n📍 Encontrem-nos novamente: {{gmapsUrl}}\n📸 Sigam-nos: {{instagramUrl}}\n⭐ Deixem uma avaliação no Google Maps!"
+  },
+  "subscribe": {
+    "prompt": "Gostariam de receber atualizações sobre eventos e ofertas especiais?",
+    "ok": "Com todo o gosto!",
+    "no": "Não, obrigado"
+  },
+  "unsubscribe": {
+    "done": "A subscrição de notificações foi cancelada. Podem reativar a qualquer momento através do menu."
+  }
+}

@@ -1,0 +1,172 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Family {
+  id             String   @id @default(cuid())
+  phone          String?  @unique
+  waId           String?  @unique
+  lang           Language @default(EN)
+  clientCode     String   @unique @map("client_code")
+  kidsCount      Int?
+  consentMarketing Boolean @default(false) @map("consent_marketing")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  // Relations
+  visits         Visit[]
+  loyaltyCounter LoyaltyCounter?
+  vouchers       Voucher[]
+  subscriptions  Subscription[]
+
+  @@map("families")
+}
+
+model Visit {
+  id       String   @id @default(cuid())
+  familyId String   @map("family_id")
+  source   VisitSource
+  staffId  String?  @map("staff_id")
+  shiftId  String?  @map("shift_id")
+  note     String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  family   Family   @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  staff    Staff?   @relation(fields: [staffId], references: [id])
+
+  @@map("visits")
+}
+
+model LoyaltyCounter {
+  familyId          String @id @map("family_id")
+  currentCycleCount Int    @default(0) @map("current_cycle_count")
+  totalVisits       Int    @default(0) @map("total_visits")
+
+  // Relations
+  family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+
+  @@map("loyalty_counters")
+}
+
+model Voucher {
+  id              String        @id @default(cuid())
+  familyId        String        @map("family_id")
+  code            String        @unique
+  status          VoucherStatus @default(ACTIVE)
+  issuedAt        DateTime      @default(now()) @map("issued_at")
+  validUntil      DateTime      @map("valid_until")
+  redeemedAt      DateTime?     @map("redeemed_at")
+  redeemedByStaffId String?     @map("redeemed_by_staff_id")
+  signature       String
+
+  // Relations
+  family          Family        @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  redeemedByStaff Staff?        @relation("VoucherRedemption", fields: [redeemedByStaffId], references: [id])
+
+  @@map("vouchers")
+}
+
+model MenuItem {
+  id      String   @id @default(cuid())
+  sku     String   @unique
+  nameEn  String   @map("name_en")
+  namePt  String   @map("name_pt")
+  descEn  String?  @map("desc_en")
+  descPt  String?  @map("desc_pt")
+  priceCents Int   @map("price_cents")
+  category MenuCategory
+  isActive Boolean @default(true) @map("is_active")
+
+  @@map("menu_items")
+}
+
+model Subscription {
+  id        String   @id @default(cuid())
+  familyId  String   @map("family_id")
+  topic     SubscriptionTopic
+  status    SubscriptionStatus @default(ON)
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  family    Family   @relation(fields: [familyId], references: [id], onDelete: Cascade)
+
+  @@unique([familyId, topic])
+  @@map("subscriptions")
+}
+
+model Staff {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  role         StaffRole
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  // Relations
+  visits       Visit[]
+  voucherRedemptions Voucher[] @relation("VoucherRedemption")
+
+  @@map("staff")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorType ActorType @map("actor_type")
+  actorId   String?  @map("actor_id")
+  action    String
+  payload   Json
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("audit_logs")
+}
+
+// Enums
+enum Language {
+  EN
+  PT
+}
+
+enum VisitSource {
+  CODE
+  QR
+  DESK
+}
+
+enum VoucherStatus {
+  ACTIVE
+  REDEEMED
+  EXPIRED
+}
+
+enum MenuCategory {
+  FOOD
+  DRINKS
+}
+
+enum SubscriptionTopic {
+  EVENTS
+  PROMOS
+}
+
+enum SubscriptionStatus {
+  ON
+  OFF
+}
+
+enum StaffRole {
+  ADMIN
+  CASHIER
+}
+
+enum ActorType {
+  SYSTEM
+  STAFF
+}

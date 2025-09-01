@@ -1,0 +1,35 @@
+{
+  "name": "teddy-bot",
+  "version": "1.0.0",
+  "description": "WhatsApp bot for Teddy & Friends playground",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "pnpm --parallel --filter=./apps/bot --filter=./apps/admin dev",
+    "build": "pnpm --recursive build",
+    "test": "pnpm --recursive test",
+    "lint": "pnpm --recursive lint",
+    "lint:fix": "pnpm --recursive lint:fix",
+    "typecheck": "pnpm --recursive typecheck",
+    "clean": "pnpm --recursive clean",
+    "db:migrate": "cd apps/bot && pnpm prisma migrate deploy",
+    "db:seed": "cd apps/bot && pnpm prisma db seed",
+    "db:studio": "cd apps/bot && pnpm prisma studio"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0",
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0"
+}
