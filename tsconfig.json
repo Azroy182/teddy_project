@@ -18,16 +18,10 @@
   },
   "references": [
     {
-      "path": "./apps/bot"
-    },
-    {
-      "path": "./apps/admin"
-    },
-    {
-      "path": "./apps/worker"
-    },
-    {
       "path": "./packages/shared"
+    },
+    {
+      "path": "./apps/bot"
     }
   ]
 }
