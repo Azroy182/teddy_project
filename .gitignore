@@ -1,122 +1,39 @@
-# Dependencies
+# Node/TS/Monorepo
 node_modules/
-.pnpm-store/
-
-# Environment
-.env
-.env.local
-.env.*.local
-
-# Build outputs
+.dist/
 dist/
 build/
+coverage/
+.cache/
+.turbo/
 .next/
-out/
+.out/
+.vercel/
+.eslintcache
 
-# Logs
+# Logs / runtime
 logs/
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# Runtime data
 pids/
 *.pid
 *.seed
-*.pid.lock
-
-# Coverage directory used by tools like istanbul
-coverage/
-*.lcov
-
-# nyc test coverage
-.nyc_output
-
-# Dependency directories
-jspm_packages/
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# parcel-bundler cache (https://parceljs.org/)
-.cache
-.parcel-cache
-
-# Next.js build output
-.next
-
-# Nuxt.js build / generate output
-.nuxt
-
-# Storybook build outputs
-.out
-.storybook-out
-
-# Temporary folders
 tmp/
-temp/
+.cache/
 
-# Editor directories and files
+# Env
+.env
+.env.*
+!.env.example
+
+# Prisma runtime artifacts (схемы и миграции — в репо)
+# (оставляем prisma/schema.prisma и prisma/migrations/**)
+.prisma/
+
+# Editors
 .vscode/
 .idea/
-*.swp
-*.swo
-*~
-
-# OS generated files
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 
-# Database
-*.db
-*.sqlite
-
-# Storage
-storage/cards/*
-storage/vouchers/*
-!storage/cards/.gitkeep
-!storage/vouchers/.gitkeep
-
 # Docker
-.dockerignore
-
-# TypeScript
-*.tsbuildinfo
-*.d.ts.map
-*.js.map
-
-# Compiled output in source directories
-packages/shared/src/*.d.ts
-packages/shared/src/*.js
-packages/shared/src/*.js.map
-prisma/*.d.ts
-prisma/*.js
-prisma/*.js.map
-
-# Prisma
-prisma/migrations/
+docker-data/
