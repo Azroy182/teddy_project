@@ -13,6 +13,10 @@ export class FamiliesService {
     return `${CLIENT_CODE_PREFIX}-${number}`;
   }
 
+  async create(dto: CreateFamilyDtoType) {
+    return this.createFamily(dto);
+  }
+
   async createFamily(dto: CreateFamilyDtoType) {
     const clientCode = await this.generateClientCode();
 

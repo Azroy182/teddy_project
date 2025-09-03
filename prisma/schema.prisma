@@ -25,6 +25,7 @@ model Family {
   loyaltyCounter LoyaltyCounter?
   vouchers       Voucher[]
   subscriptions  Subscription[]
+  visitCodes     VisitCode[]
 
   @@map("families")
 }
@@ -113,8 +114,26 @@ model Staff {
   // Relations
   visits       Visit[]
   voucherRedemptions Voucher[] @relation("VoucherRedemption")
+  visitCodesIssued   VisitCode[] @relation("VisitCodeIssuer")
 
   @@map("staff")
+}
+
+model VisitCode {
+  id        String   @id @default(cuid())
+  familyId  String   @map("family_id")
+  code      String   @unique
+  staffId   String?  @map("staff_id")
+  isUsed    Boolean  @default(false) @map("is_used")
+  usedAt    DateTime? @map("used_at")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  family    Family   @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  staff     Staff?   @relation("VisitCodeIssuer", fields: [staffId], references: [id])
+
+  @@map("visit_codes")
 }
 
 model AuditLog {

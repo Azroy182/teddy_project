@@ -56,16 +56,8 @@ export class WabaController {
 
   private async processMessage(message: any, phoneNumberId: string) {
     this.logger.log(`Processing message from ${message.from}: ${message.type}`);
-
-    // TODO: Implement message processing logic
-    // - Handle text messages
-    // - Handle interactive button/list replies  
-    // - Route to appropriate handlers based on conversation state
     
-    if (message.type === 'text') {
-      this.logger.log(`Text message: ${message.text.body}`);
-    } else if (message.type === 'interactive') {
-      this.logger.log(`Interactive message: ${JSON.stringify(message.interactive)}`);
-    }
+    // Используем новый метод WabaService для обработки сообщений
+    await this.wabaService.processMessage(message, phoneNumberId);
   }
 }

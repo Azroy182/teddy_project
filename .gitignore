@@ -105,5 +105,18 @@ storage/vouchers/*
 # Docker
 .dockerignore
 
+# TypeScript
+*.tsbuildinfo
+*.d.ts.map
+*.js.map
+
+# Compiled output in source directories
+packages/shared/src/*.d.ts
+packages/shared/src/*.js
+packages/shared/src/*.js.map
+prisma/*.d.ts
+prisma/*.js
+prisma/*.js.map
+
 # Prisma
 prisma/migrations/

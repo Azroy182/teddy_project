@@ -1,37 +1,47 @@
-FROM node:20-alpine AS base
+FROM node:20-alpine
 
-# Install dependencies only when needed
-FROM base AS deps
-RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
-COPY package.json pnpm-lock.yaml* ./
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
+# Install system dependencies
+RUN apk add --no-cache libc6-compat curl
 
-# Rebuild the source code only when needed
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# Set environment variables
+ENV NODE_ENV=production
+ENV PUPPETEER_SKIP_DOWNLOAD=true
+
+# Copy package files first for better caching
+COPY package.json ./
+COPY pnpm-workspace.yaml ./
+COPY packages/shared/package.json ./packages/shared/
+COPY apps/bot/package.json ./apps/bot/
+COPY prisma ./prisma/
+
+# Create .npmrc for faster downloads
+RUN echo "registry=https://registry.npmjs.org/" > .npmrc && \
+    echo "fetch-retries=3" >> .npmrc && \
+    echo "fetch-retry-mintimeout=5000" >> .npmrc && \
+    echo "fetch-retry-maxtimeout=60000" >> .npmrc
+
+# Install dependencies using npm (more reliable than pnpm in Docker)
+RUN npm install -g pnpm@8.15.0 && \
+    pnpm install --no-frozen-lockfile
+
+# Copy source code
 COPY . .
 
-# Build the application
-RUN npm install -g pnpm
-RUN pnpm build --filter=./apps/bot
+# Generate Prisma client (using npx to ensure correct path)
+RUN npx prisma generate
 
-# Production image, copy all the files and run the app
-FROM base AS runner
-WORKDIR /app
+# Build packages
+RUN pnpm --filter=./packages/shared build
+RUN pnpm --filter=./apps/bot build
 
-ENV NODE_ENV=production
+# Create non-root user
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nestjs
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nestjs
-
-COPY --from=builder /app/apps/bot/dist ./dist
-COPY --from=builder /app/apps/bot/package.json ./package.json
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/prisma ./prisma
+# Set permissions
+RUN chown -R nestjs:nodejs /app
 
 USER nestjs
 
@@ -39,4 +49,4 @@ EXPOSE 3001
 
 ENV PORT=3001
 
-CMD ["node", "dist/main"]
+CMD ["node", "apps/bot/dist/main"]

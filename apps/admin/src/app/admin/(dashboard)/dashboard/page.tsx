@@ -41,7 +41,7 @@ export default function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Today's Visits</CardTitle>
+            <CardTitle className="text-sm font-medium">Today&apos;s Visits</CardTitle>
             <span className="text-2xl">🎯</span>
           </CardHeader>
           <CardContent>

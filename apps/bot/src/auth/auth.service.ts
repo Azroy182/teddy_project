@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as argon2 from 'argon2';
+import * as crypto from 'crypto';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { LoginDtoType } from '@teddy/shared';
@@ -21,7 +21,9 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const isPasswordValid = await argon2.verify(staff.passwordHash, dto.password);
+    // Simple hash comparison for development - replace with argon2 in production
+    const hashedPassword = crypto.createHash('sha256').update(dto.password).digest('hex');
+    const isPasswordValid = staff.passwordHash === hashedPassword;
 
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');

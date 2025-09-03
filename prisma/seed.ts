@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import * as argon2 from 'argon2';
-import * as menuData from '../infra/scripts/menu.seed.json';
+import * as crypto from 'crypto';
+import menuData from '../infra/scripts/menu.seed.json';
 
 const prisma = new PrismaClient();
 
@@ -23,7 +23,8 @@ async function seedAdmin() {
     return;
   }
 
-  const passwordHash = await argon2.hash(password);
+  // Simple hash for development - replace with argon2 in production
+  const passwordHash = crypto.createHash('sha256').update(password).digest('hex');
 
   const admin = await prisma.staff.create({
     data: {

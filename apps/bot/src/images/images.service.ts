@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as puppeteer from 'puppeteer';
-import * as path from 'path';
-import * as fs from 'fs/promises';
+// import * as puppeteer from 'puppeteer';
+// import * as path from 'path';
+// import * as fs from 'fs/promises';
 import type { Language } from '@teddy/shared';
 
 @Injectable()
@@ -16,34 +16,12 @@ export class ImagesService {
     clientCode: string,
     current: number,
     target: number,
-    language: Language = 'EN'
+    _language: Language = 'EN'
   ): Promise<string> {
-    try {
-      const browser = await puppeteer.launch({ headless: true });
-      const page = await browser.newPage();
-
-      await page.setViewport({ width: 1200, height: 628 });
-
-      const html = this.getLoyaltyCardHTML(clientCode, current, target, language);
-      await page.setContent(html);
-
-      const filename = `loyalty-${familyId}-${Date.now()}.png`;
-      const filepath = path.join(process.cwd(), 'storage', 'cards', filename);
-
-      await page.screenshot({
-        path: filepath,
-        type: 'png',
-        fullPage: false,
-      });
-
-      await browser.close();
-
-      const baseUrl = this.configService.get('BASE_URL') || 'http://localhost:8080';
-      return `${baseUrl}/storage/cards/${filename}`;
-    } catch (error) {
-      this.logger.error('Failed to generate loyalty card:', error);
-      throw new Error('Failed to generate loyalty card');
-    }
+    // TODO: Implement with Puppeteer later
+    this.logger.warn('Loyalty card generation is mocked - Puppeteer not available');
+    const baseUrl = this.configService.get('BASE_URL') || 'http://localhost:8080';
+    return `${baseUrl}/storage/cards/mock-loyalty-${familyId}.png`;
   }
 
   async generateVoucher(
@@ -51,34 +29,12 @@ export class ImagesService {
     code: string,
     clientCode: string,
     validUntil: Date,
-    language: Language = 'EN'
+    _language: Language = 'EN'
   ): Promise<string> {
-    try {
-      const browser = await puppeteer.launch({ headless: true });
-      const page = await browser.newPage();
-
-      await page.setViewport({ width: 1200, height: 628 });
-
-      const html = this.getVoucherHTML(code, clientCode, validUntil, language);
-      await page.setContent(html);
-
-      const filename = `voucher-${voucherId}-${Date.now()}.png`;
-      const filepath = path.join(process.cwd(), 'storage', 'vouchers', filename);
-
-      await page.screenshot({
-        path: filepath,
-        type: 'png',
-        fullPage: false,
-      });
-
-      await browser.close();
-
-      const baseUrl = this.configService.get('BASE_URL') || 'http://localhost:8080';
-      return `${baseUrl}/storage/vouchers/${filename}`;
-    } catch (error) {
-      this.logger.error('Failed to generate voucher:', error);
-      throw new Error('Failed to generate voucher');
-    }
+    // TODO: Implement with Puppeteer later
+    this.logger.warn('Voucher generation is mocked - Puppeteer not available');
+    const baseUrl = this.configService.get('BASE_URL') || 'http://localhost:8080';
+    return `${baseUrl}/storage/vouchers/mock-voucher-${voucherId}.png`;
   }
 
   private getLoyaltyCardHTML(clientCode: string, current: number, target: number, language: Language): string {

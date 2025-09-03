@@ -23,11 +23,19 @@ export class LoyaltyController {
   @UseGuards(JwtAuthGuard)
   async recordVisit(@Body() dto: ConfirmVisitDtoType) {
     try {
-      // TODO: Implement visit code validation
-      // For now, assume familyId is passed directly
-      const familyId = dto.code; // Temporary hack
-      
-      const result = await this.loyaltyService.incrementVisit(familyId, dto.staffId);
+      // Используем новую систему кодов
+      const result = await this.loyaltyService.confirmVisitByCode(dto);
+      return handleSuccess(result);
+    } catch (error) {
+      return handleError(error);
+    }
+  }
+
+  @Post('issue-code')
+  @UseGuards(JwtAuthGuard)
+  async issueVisitCode(@Body() dto: { familyId: string; staffId?: string }) {
+    try {
+      const result = await this.loyaltyService.issueVisitCode(dto.familyId, dto.staffId);
       return handleSuccess(result);
     } catch (error) {
       return handleError(error);

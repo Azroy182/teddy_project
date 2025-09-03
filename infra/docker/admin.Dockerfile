@@ -1,42 +1,42 @@
-FROM node:20-alpine AS base
+FROM node:20-alpine
 
-# Install dependencies only when needed
-FROM base AS deps
+WORKDIR /app
+
+# Install system dependencies
 RUN apk add --no-cache libc6-compat
-WORKDIR /app
 
-# Install dependencies based on the preferred package manager
-COPY package.json pnpm-lock.yaml* ./
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
-
-# Rebuild the source code only when needed
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-
-# Build the application
-RUN npm install -g pnpm
-RUN pnpm build --filter=./apps/admin
-
-# Production image, copy all the files and run the app
-FROM base AS runner
-WORKDIR /app
-
+# Set environment variables
 ENV NODE_ENV=production
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# Copy package files first for better caching
+COPY package.json ./
+COPY pnpm-workspace.yaml ./
+COPY packages/shared/package.json ./packages/shared/
+COPY apps/admin/package.json ./apps/admin/
 
-COPY --from=builder /app/apps/admin/public ./public
+# Create .npmrc for faster downloads
+RUN echo "registry=https://registry.npmjs.org/" > .npmrc && \
+    echo "fetch-retries=3" >> .npmrc && \
+    echo "fetch-retry-mintimeout=5000" >> .npmrc && \
+    echo "fetch-retry-maxtimeout=60000" >> .npmrc
 
-# Set the correct permission for prerender cache
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
+# Install dependencies using npm (more reliable than pnpm in Docker)
+RUN npm install -g pnpm@8.15.0 && \
+    pnpm install --no-frozen-lockfile
 
-# Automatically leverage output traces to reduce image size
-COPY --from=builder --chown=nextjs:nodejs /app/apps/admin/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/apps/admin/.next/static ./apps/admin/.next/static
+# Copy source code
+COPY . .
+
+# Build packages
+RUN pnpm --filter=./packages/shared build
+RUN pnpm --filter=./apps/admin build
+
+# Create non-root user
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
+
+# Set permissions
+RUN chown -R nextjs:nodejs /app
 
 USER nextjs
 
@@ -45,4 +45,4 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["node", "apps/admin/server.js"]
+CMD ["pnpm", "--filter=./apps/admin", "start"]

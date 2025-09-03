@@ -1,12 +1,21 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { LOYALTY_TARGET } from '@teddy/shared';
+import { ConfigService } from '@nestjs/config';
+import type { ConfirmVisitDtoType } from '@teddy/shared';
+import { VisitCodesService } from './visit-codes.service';
 
 @Injectable()
 export class LoyaltyService {
   private readonly logger = new Logger(LoyaltyService.name);
+  private readonly loyaltyTarget: number;
 
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private configService: ConfigService,
+    private visitCodesService: VisitCodesService,
+  ) {
+    this.loyaltyTarget = this.configService.get<number>('LOYALTY_TARGET', 5);
+  }
 
   async getLoyaltyProgress(familyId: string) {
     const counter = await this.prisma.loyaltyCounter.findUnique({
@@ -16,15 +25,15 @@ export class LoyaltyService {
     if (!counter) {
       return {
         current: 0,
-        target: LOYALTY_TARGET,
+        target: this.loyaltyTarget,
         percentage: 0,
       };
     }
 
     return {
       current: counter.currentCycleCount,
-      target: LOYALTY_TARGET,
-      percentage: Math.round((counter.currentCycleCount / LOYALTY_TARGET) * 100),
+      target: this.loyaltyTarget,
+      percentage: Math.round((counter.currentCycleCount / this.loyaltyTarget) * 100),
     };
   }
 
@@ -70,11 +79,11 @@ export class LoyaltyService {
       },
     });
 
-    this.logger.log(`Visit recorded for family ${familyId}: ${counter.currentCycleCount}/${LOYALTY_TARGET}`);
+    this.logger.log(`Visit recorded for family ${familyId}: ${counter.currentCycleCount}/${this.loyaltyTarget}`);
 
     // Check if loyalty target reached
     let voucherIssued = false;
-    if (counter.currentCycleCount >= LOYALTY_TARGET) {
+    if (counter.currentCycleCount >= this.loyaltyTarget) {
       voucherIssued = await this.issueVoucher(familyId);
       
       // Reset cycle counter
@@ -88,11 +97,21 @@ export class LoyaltyService {
       visit,
       loyaltyProgress: {
         current: voucherIssued ? 0 : counter.currentCycleCount,
-        target: LOYALTY_TARGET,
-        percentage: voucherIssued ? 0 : Math.round((counter.currentCycleCount / LOYALTY_TARGET) * 100),
+        target: this.loyaltyTarget,
+        percentage: voucherIssued ? 0 : Math.round((counter.currentCycleCount / this.loyaltyTarget) * 100),
       },
       voucherIssued,
     };
+  }
+
+  // Новый метод для подтверждения визита по коду
+  async confirmVisitByCode(dto: ConfirmVisitDtoType) {
+    return await this.visitCodesService.confirmCode(dto);
+  }
+
+  // Выдача кода для семьи
+  async issueVisitCode(familyId: string, staffId?: string) {
+    return await this.visitCodesService.issueCode({ familyId }, staffId);
   }
 
   private async issueVoucher(familyId: string): Promise<boolean> {

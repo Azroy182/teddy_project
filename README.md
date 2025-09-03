@@ -146,3 +146,246 @@ See `env.example` for all available variables. Key ones:
 ## License
 
 Private - Teddy & Friends
+
+# �� **ПОДРОБНАЯ ИНСТРУКЦИЯ ПО ЗАПУСКУ ПРОЕКТА TEDDY & FRIENDS**
+
+## �� **БЫСТРЫЙ СТАРТ (3 терминала)**
+
+### **Терминал 1: База данных и Redis**
+```bash
+# Подключиться к VM
+ssh admin1@192.168.1.115
+su -
+
+# Запустить инфраструктуру
+cd ~/teddy_project
+docker compose up -d db redis
+
+# Проверить статус
+docker compose ps
+```
+
+### **Терминал 2: NestJS API (порт 3001)**
+```bash
+# Подключиться к VM
+ssh admin1@192.168.1.115
+su -
+
+# Запустить API
+cd ~/teddy_project/apps/bot
+pnpm start:dev
+
+# Должно появиться: "Application is running on: http://localhost:3001"
+```
+
+### **Терминал 3: Next.js Admin Panel (порт 3000)**
+```bash
+# Подключиться к VM
+ssh admin1@192.168.1.115
+su -
+
+# Создать .env.local для Admin
+cd ~/teddy_project/apps/admin
+cat > .env.local << 'EOF'
+NEXT_PUBLIC_API_URL=http://localhost:3001
+NEXT_PUBLIC_APP_NAME=Teddy & Friends Admin
+EOF
+
+# Запустить Admin
+pnpm dev
+
+# Должно появиться: "Ready - started server on 0.0.0.0:3000"
+```
+
+---
+
+## �� **ПОЛНАЯ ИНСТРУКЦИЯ**
+
+### **1. Подготовка VM**
+```bash
+# Подключение
+ssh admin1@192.168.1.115
+su -
+
+# Проверить Docker
+docker --version
+docker compose --version
+
+# Проверить Node.js
+node --version
+pnpm --version
+```
+
+### **2. Запуск инфраструктуры**
+```bash
+cd ~/teddy_project
+
+# Запустить базу и Redis
+docker compose up -d db redis
+
+# Проверить статус
+docker compose ps
+
+# Проверить логи
+docker compose logs db
+docker compose logs redis
+```
+
+### **3. Запуск API**
+```bash
+cd ~/teddy_project/apps/bot
+
+# Проверить зависимости
+pnpm install
+
+# Сгенерировать Prisma клиент
+pnpm prisma generate
+
+# Запустить в режиме разработки
+pnpm start:dev
+```
+
+### **4. Запуск Admin Panel**
+```bash
+cd ~/teddy_project/apps/admin
+
+# Проверить зависимости
+pnpm install
+
+# Создать конфигурацию
+cat > .env.local << 'EOF'
+NEXT_PUBLIC_API_URL=http://localhost:3001
+NEXT_PUBLIC_APP_NAME=Teddy & Friends Admin
+EOF
+
+# Запустить в режиме разработки
+pnpm dev
+```
+
+---
+
+## �� **ТЕСТИРОВАНИЕ**
+
+### **Проверка API**
+```bash
+# Health check
+curl http://localhost:3001/api/healthz
+
+# Логин админа
+curl -X POST http://localhost:3001/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@teddy.pt","password":"change_me"}'
+
+# Скопировать токен из ответа и использовать:
+TOKEN="YOUR_JWT_TOKEN_HERE"
+
+# Тест защищенного endpoint
+curl -H "Authorization: Bearer $TOKEN" \
+  http://localhost:3001/api/families
+```
+
+### **Проверка Admin Panel**
+- Открыть браузер: `http://192.168.1.115:3000`
+- Логин: `admin@teddy.pt`
+- Пароль: `change_me`
+
+---
+
+## �� **ОСТАНОВКА**
+
+### **Остановка всех сервисов**
+```bash
+# В терминале с API: Ctrl+C
+# В терминале с Admin: Ctrl+C
+
+# Остановить Docker контейнеры
+cd ~/teddy_project
+docker compose down
+```
+
+---
+
+## �� **ДИАГНОСТИКА ПРОБЛЕМ**
+
+### **API не отвечает**
+```bash
+# Проверить процесс
+ps aux | grep "pnpm start:dev"
+
+# Проверить порт
+netstat -tlnp | grep 3001
+
+# Проверить логи
+cd ~/teddy_project/apps/bot
+tail -f logs/app.log
+```
+
+### **Admin не подключается к API**
+```bash
+# Проверить .env.local
+cat ~/teddy_project/apps/admin/.env.local
+
+# Проверить доступность API
+curl http://localhost:3001/api/healthz
+```
+
+### **База данных недоступна**
+```bash
+# Проверить Docker контейнеры
+docker compose ps
+
+# Проверить логи базы
+docker compose logs db
+
+# Перезапустить базу
+docker compose restart db
+```
+
+---
+
+## �� **СТРУКТУРА ПРОЕКТА**
+```
+teddy_project/
+├── apps/
+│   ├── bot/          # NestJS API (порт 3001)
+│   └── admin/        # Next.js Admin (порт 3000)
+├── packages/
+│   └── shared/       # Общие типы и утилиты
+├── prisma/           # Схема базы данных
+├── docker-compose.yml # Инфраструктура
+└── package.json      # Корневой package.json
+```
+
+---
+
+## 🎯 **ЧЕКЛИСТ ЗАПУСКА**
+
+- [ ] VM запущена и доступна по SSH
+- [ ] Docker и Docker Compose установлены
+- [ ] Node.js и pnpm установлены
+- [ ] База данных и Redis запущены
+- [ ] API запущен на порту 3001
+- [ ] Admin Panel запущен на порту 3000
+- [ ] .env.local создан для Admin
+- [ ] API отвечает на health check
+- [ ] Admin Panel открывается в браузере
+
+---
+
+## �� **ПОЛЕЗНЫЕ КОМАНДЫ**
+
+```bash
+# Очистка Docker
+docker system prune -a --volumes -f
+
+# Перезапуск всех сервисов
+docker compose restart
+
+# Просмотр логов
+docker compose logs -f
+
+# Проверка места на диске
+df -h
+```
+
+**Удачи с проектом! 🚀**
