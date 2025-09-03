@@ -112,7 +112,7 @@ pnpm dev:admin  # Next.js Admin (port 3000)
 ### **5. Admin Login**
 
 - **Email**: `admin@teddy.pt`
-- **Password**: `change_me` (change in .env)
+- **Password**: (set in .env ADMIN_SEED_PASSWORD)
 
 ## 🎮 **Demo Flow**
 
@@ -189,13 +189,13 @@ Key variables to configure in `.env`:
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/teddy
 
 # WhatsApp Business API
-WABA_VERIFY_TOKEN=your_verify_token
-WABA_ACCESS_TOKEN=your_access_token
-WABA_PHONE_NUMBER_ID=your_phone_number_id
+WABA_VERIFY_TOKEN=***
+WABA_ACCESS_TOKEN=***
+WABA_PHONE_NUMBER_ID=***
 
 # Authentication
-JWT_SECRET=your_secure_secret
-ADMIN_SEED_PASSWORD=your_admin_password
+JWT_SECRET=***
+ADMIN_SEED_PASSWORD=***
 
 # Business Logic
 LOYALTY_TARGET=5          # Visits needed for voucher
@@ -347,10 +347,10 @@ curl http://localhost:8080/api/healthz
 ```bash
 # Production environment variables
 NODE_ENV=production
-DATABASE_URL=postgresql://user:pass@prod-db:5432/teddy
+DATABASE_URL=postgresql://***:***@prod-db:5432/teddy
 REDIS_URL=redis://prod-redis:6379
-JWT_SECRET=your-super-secure-secret
-WABA_ACCESS_TOKEN=your-production-token
+JWT_SECRET=***
+WABA_ACCESS_TOKEN=***
 ```
 
 ## 📈 **Performance**
@@ -412,7 +412,7 @@ pnpm build          # Ensure builds
 
 - **Repository**: [LitovPro/teddy_project](https://github.com/LitovPro/teddy_project)
 - **Issues**: [Report bugs or request features](https://github.com/LitovPro/teddy_project/issues)
-- **Email**: nizhnik1111@mail.ru
+- **Business Inquiries**: Contact through GitHub issues
 
 ## 📄 **License**
 

@@ -23,8 +23,8 @@ docker-compose up -d db redis
 cp env.example .env
 
 # Отредактируйте .env, заменив IP_ADDRESS_VM на реальный IP:
-DATABASE_URL=postgresql://postgres:postgres@192.168.1.100:5432/teddy?schema=public
-REDIS_URL=redis://192.168.1.100:6379
+DATABASE_URL=postgresql://postgres:postgres@YOUR_VM_IP:5432/teddy?schema=public
+REDIS_URL=redis://YOUR_VM_IP:6379
 ```
 
 ## 🚀 Запуск разработки

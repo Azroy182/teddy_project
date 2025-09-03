@@ -28,7 +28,7 @@ chmod +x vm-setup.sh
 pnpm setup:env IP_ADDRESS
 
 # Пример:
-# pnpm setup:env 192.168.1.100
+# pnpm setup:env YOUR_VM_IP
 ```
 
 ### 3. Проверьте подключение:

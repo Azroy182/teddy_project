@@ -140,7 +140,7 @@ export class VouchersService {
   }
 
   private generateHmacSignature(code: string, familyId: string, validUntil: Date): string {
-    const secret = this.configService.get('JWT_SECRET', 'dev_secret');
+    const secret = this.configService.get('JWT_SECRET', 'fallback_secret_change_in_production');
     const data = `${code}:${familyId}:${validUntil.toISOString()}`;
     
     return crypto
